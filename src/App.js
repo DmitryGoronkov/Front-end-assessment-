@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import Student from './components/student/student'
 import axios from 'axios'
 

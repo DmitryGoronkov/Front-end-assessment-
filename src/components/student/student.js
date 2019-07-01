@@ -1,5 +1,5 @@
 import React from 'react';
-
+import "./student.scss"
 
 class Student extends React.Component {
   render(){
@@ -9,13 +9,17 @@ class Student extends React.Component {
       const sum = grades.reduce((total,num)=>total+parseInt(num),0);
       const average = Math.round(sum/grades.length*1000)/1000;
     return (
-        <div>
+        <div className="student">
             <img src={`${pic}`} alt="Avatar" className="student__image"/>
-            <h1>{name}</h1>
-            <div>Email: {email}</div>
-            <div>Company: {company}</div>
-            <div>Skill: {skill}</div>
-            <div>Average: {average}%</div>
+            <div className="student__info">
+                <h1>{name}</h1>
+                <div className="student__info__data">
+                    <div>Email: {email}</div>
+                    <div>Company: {company}</div>
+                    <div>Skill: {skill}</div>
+                    <div>Average: {average}%</div>
+                </div>
+            </div>
         </div>
         );
     }
