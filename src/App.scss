@@ -1,2 +1,17 @@
-
+.app{
+  box-sizing: border-box;
+}
+input {
+  border: none;
+}
+.inputText{
+  width: 97%;
+  margin: 0.5rem;
+  height: 2rem;
+  font-size: 1rem;
+  border-bottom: 1px solid black;
+  &:focus{
+    outline: none;
+  }
+}
 
