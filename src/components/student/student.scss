@@ -14,12 +14,43 @@
         margin-block-start: 0;
         line-height: 2rem;
     }
+    &__inputText{
+        width: 10rem;
+        height: 2rem;
+        font-size: 1rem;
+        border-bottom: 1px solid $bordergrey;
+        &:focus{
+          outline: none;
+        }
+    }
+    &__tags{
+        width: 30rem;
+    }
+    &__button{
+        margin-top: 0.3rem;
+        margin-left: auto;
+        border: none;
+        background: none;
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 0;
+        &:focus{
+            outline: none;
+        }
+    }
+
     &__info{
         &__data{
             padding-left: 1rem;
+            &__average{
+                margin-bottom: 1rem;
+            }
         }
     }
     &:last-child{
         border-bottom: none;
     }
 }
+input {
+    border: none;
+  }

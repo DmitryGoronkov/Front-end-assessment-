@@ -6,22 +6,33 @@ import axios from 'axios'
 class App extends React.Component {
   state = {
     students: [],
-    text:  "",
-    suggestions: []
+    textByName:  "",
+    textByTag: "",
+    suggestions: [],
+    regexByName: "" 
   }
+  
   onTextChanged = (e) => {
-    const value = e.target.value;
+    const valueByName = this.refs.byName.value;
+    const valueByTag = this.refs.byTag.value;
     let suggestions = [];
-    if (value.length >= 0) {
-        const regex = new RegExp(`^${value}`, 'i');
+    if (valueByName.length >= 0) {
+        const regexByName = new RegExp(`^${valueByName}`, 'i');
+        const regexByTag = new RegExp(`^${valueByTag}`, 'i');
         suggestions = this.state.students.sort(function(a, b){
           if(a.lastName < b.lastName) { return -1; }
           if(a.lastName > b.lastName) { return 1; }
           return 0;
         })
-        let suggestionsFiltered=suggestions.filter(v => (regex.test(v.lastName))||(regex.test(v.firstName)));
-        this.setState({suggestions:suggestionsFiltered, text: value });
-        
+        let suggestionsFiltered=suggestions.filter(v => (regexByName.test(v.lastName))||(regexByName.test(v.firstName)));
+        function regexTrue(element, index, array) {
+          return regexByTag.test(element)
+        }
+        let suggestionsFiltered2=suggestionsFiltered;
+        if (valueByTag.length>0){
+          suggestionsFiltered2=suggestionsFiltered.filter(suggestion => (suggestion.tags.some(regexTrue)),);
+        } 
+        this.setState({suggestions:suggestionsFiltered2, textByName: valueByName, textByTag: valueByTag });
     }
     
     
@@ -29,7 +40,13 @@ class App extends React.Component {
   componentDidMount(){
     axios.get (`https://www.hatchways.io/api/assessment/students`)
       .then (response => {
-        this.setState({students: response.data.students, suggestions: response.data.students})
+        const data = response.data.students;
+        let students = data.map(function(element) {
+          var object = Object.assign({}, element);
+          object.tags = [];
+          return object;
+        })
+        this.setState({students: students, suggestions: students})
       })
       .catch (error => {
         console.log("Error receiving data")
@@ -39,9 +56,26 @@ class App extends React.Component {
     console.log(this.state.students)
   return (
       <div className="App">
-        <input className="inputText" value = {this.state.text} onChange={this.onTextChanged}/>
+        <button onClick={()=>{console.log(this.state)}}>Console state</button>
+        <input ref="byName" className="inputText" value = {this.state.textByName} onChange={this.onTextChanged}/>
+        <input ref="byTag" className="inputText" value = {this.state.textByTag} onChange={this.onTextChanged}/>
         {this.state.suggestions.map(student=>{
+          const childHandler=(dataFromChild, id)=> {
+            let newStudent = {...student, tags: dataFromChild}
+            var foundIndexSt = this.state.students.findIndex(item => item.id == id);
+            var foundIndexSug = this.state.suggestions.findIndex(item => item.id == id);
+            let updatedSuggestions = this.state.suggestions;
+            updatedSuggestions[foundIndexSug] = newStudent;
+            let updatedStudents = this.state.students;
+            updatedStudents[foundIndexSt] = newStudent;
+            this.setState({
+                suggestions: updatedSuggestions, students: updatedStudents
+            })
+          }
           return(<Student
+            action={childHandler}
+            tags={student.tags}
+            id={student.id}
             key={student.id} 
             pic={student.pic}
             company={student.company}
@@ -58,3 +92,4 @@ class App extends React.Component {
 }
 
 export default App;
+
