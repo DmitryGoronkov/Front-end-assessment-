@@ -56,9 +56,8 @@ class App extends React.Component {
     console.log(this.state.students)
   return (
       <div className="App">
-        <button onClick={()=>{console.log(this.state)}}>Console state</button>
-        <input ref="byName" className="inputText" value = {this.state.textByName} onChange={this.onTextChanged}/>
-        <input ref="byTag" className="inputText" value = {this.state.textByTag} onChange={this.onTextChanged}/>
+        <input ref="byName" className="inputText" placeholder="Search by name" value = {this.state.textByName} onChange={this.onTextChanged}/>
+        <input ref="byTag" className="inputText" placeholder="Search by tag" value = {this.state.textByTag} onChange={this.onTextChanged}/>
         {this.state.suggestions.map(student=>{
           const childHandler=(dataFromChild, id)=> {
             let newStudent = {...student, tags: dataFromChild}

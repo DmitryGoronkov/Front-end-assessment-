@@ -1,3 +1,4 @@
+@import "./styles/variables.scss";
 .app{
   box-sizing: border-box;
 }
@@ -9,7 +10,7 @@ input {
   margin: 0.5rem;
   height: 2rem;
   font-size: 1rem;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid $bordergrey;
   &:focus{
     outline: none;
   }
